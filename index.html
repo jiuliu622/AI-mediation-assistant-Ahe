@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>阿和 · 客厅和事佬</title>
+<meta name="theme-color" content="#1D1611">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23F2D4AC'/%3E%3Crect x='18' y='25' width='7' height='14' rx='3.5' fill='%233B2A1E'/%3E%3Crect x='39' y='25' width='7' height='14' rx='3.5' fill='%233B2A1E'/%3E%3Cpath d='M26 45 q6 5 12 0' stroke='%233B2A1E' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#1D1611;
+  --card:#2A211A;
+  --card-2:#332820;
+  --line:rgba(255,231,203,.13);
+  --text:#F4E9DC;
+  --muted:#A89480;
+  --amber:#F5A85A;
+  --amber-soft:#FFD6A4;
+  --calm:#8FB3A1;
+  --hot:#D2593F;
+  --sans:-apple-system,"PingFang SC","Hiragino Sans GB","Source Han Sans SC","Microsoft YaHei",sans-serif;
+  --serif:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;min-height:100dvh;
+  background:radial-gradient(115% 70% at 50% -10%, #35281E 0%, #221A14 52%, #17110D 100%);
+  color:var(--text);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.wrap{
+  display:flex;flex-direction:column;
+  min-height:100vh;
+  min-height:100dvh;
+  padding:calc(14px + env(safe-area-inset-top)) 18px calc(16px + env(safe-area-inset-bottom));
+  max-width:560px;margin:0 auto;gap:14px;
+}
+/* ---------- 顶栏 ---------- */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-dot{
+  width:9px;height:9px;border-radius:50%;background:var(--amber);
+  box-shadow:0 0 0 3px rgba(245,168,90,.12);flex:none;
+  transition:background .4s,box-shadow .4s;
+}
+.brand-dot.live{background:var(--calm);box-shadow:0 0 0 3px rgba(143,179,161,.14)}
+.brand-dot.hot{background:var(--hot);box-shadow:0 0 0 3px rgba(210,89,63,.16)}
+h1{font-size:17px;font-weight:600;letter-spacing:.06em;margin:0;line-height:1.2}
+.mode-line{font-size:12px;color:var(--muted);margin:2px 0 0;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-actions{display:flex;gap:6px;flex:none}
+.icon-btn{
+  width:44px;height:44px;border-radius:14px;border:1px solid var(--line);
+  background:transparent;color:var(--muted);display:grid;place-items:center;
+  cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;
+}
+.icon-btn:active{background:rgba(255,231,203,.06)}
+.icon-btn[aria-pressed="true"]{color:var(--amber);border-color:rgba(245,168,90,.4)}
+.icon-btn svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round}
+/* ---------- 舞台 ---------- */
+.stage{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:2px}
+.face-wrap{position:relative;width:100%;height:min(34vh,300px);min-height:196px}
+#face{width:100%;height:100%;display:block}
+.chip-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 12px;border-radius:999px;
+  font-size:12.5px;letter-spacing:.05em;border:1px solid var(--line);color:var(--text);
+  background:rgba(255,231,203,.045);
+}
+.chip i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
+.chip.ghost{color:var(--muted);background:transparent}
+.chip.hot{color:#F1A78F;border-color:rgba(210,89,63,.35);background:rgba(210,89,63,.1)}
+.subtitle{
+  font-family:var(--serif);font-size:17px;line-height:1.72;letter-spacing:.02em;
+  text-align:center;color:#EDDFCC;margin:0;min-height:3.44em;
+  max-width:400px;text-wrap:balance;
+  max-height:190px;overflow-y:auto;overscroll-behavior:contain;
+}
+.subtitle.long{font-size:15px;line-height:1.66;text-align:left;max-height:220px}
+.subtitle .dim{color:var(--muted)}
+/* ---------- 打字问答 ---------- */
+.ask{display:flex;gap:8px;width:100%;max-width:400px;align-items:center}
+.ask input{
+  flex:1;min-width:0;height:46px;padding:0 15px;border-radius:14px;font-size:16px;
+  border:1px solid var(--line);background:rgba(255,231,203,.045);color:#EDDFCC;
+  font-family:inherit;-webkit-appearance:none;appearance:none;
+}
+.ask input::placeholder{color:rgba(196,178,153,.65)}
+.ask input:focus{outline:2px solid rgba(245,168,90,.5);outline-offset:1px;border-color:transparent}
+.ask button{
+  flex:0 0 46px;width:46px;height:46px;border-radius:14px;border:1px solid rgba(245,168,90,.4);
+  background:rgba(245,168,90,.12);color:var(--amber);display:grid;place-items:center;cursor:pointer;
+}
+.ask button svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round}
+.ask button:active{transform:scale(.97)}
+/* ---------- 读数面板 ---------- */
+.panel{
+  border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,rgba(255,231,203,.055),rgba(255,231,203,.012));
+  padding:14px 16px 13px;
+}
+.panel-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px}
+.panel-head span{font-size:12.5px;color:var(--muted);letter-spacing:.08em}
+.panel-head strong{font-size:15px;font-variant-numeric:tabular-nums;color:var(--amber-soft);letter-spacing:.02em}
+.track{position:relative;height:4px;border-radius:3px;background:rgba(255,231,203,.09);overflow:visible}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;
+  background:linear-gradient(90deg,rgba(245,168,90,.75),var(--hot));
+  transition:width .28s cubic-bezier(.22,1,.36,1)}
+.threshold{position:absolute;top:-4px;bottom:-4px;width:2px;background:rgba(244,233,220,.28);left:65%;border-radius:2px}
+.gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.gauge{min-width:0}
+.gauge span{display:block;font-size:11.5px;color:var(--muted);letter-spacing:.06em;margin-bottom:5px}
+.gauge i{display:block;height:3px;border-radius:2px;background:rgba(255,231,203,.09);position:relative;overflow:hidden}
+.gauge b{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--calm);border-radius:2px;transition:width .3s linear}
+.gauge:nth-child(1) b{background:var(--amber)}
+.gauge:nth-child(2) b{background:#E08C63}
+.gauge:nth-child(3) b{background:#C97A5C}
+/* ---------- 操作 ---------- */
+.actions{display:flex;flex-direction:column;gap:9px;margin-top:auto}
+.primary{
+  height:54px;border-radius:16px;border:none;cursor:pointer;
+  background:linear-gradient(180deg,#F8BE7C,#EFA04F);color:#2A1B0F;
+  font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:.1em;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .12s,filter .2s;
+}
+.primary:active{transform:scale(.985);filter:brightness(.94)}
+.primary.is-on{background:linear-gradient(180deg,#3C4E45,#2E3D36);color:var(--calm);border:1px solid rgba(143,179,161,.35)}
+.sub-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.secondary{
+  height:46px;border-radius:14px;border:1px solid var(--line);background:rgba(255,231,203,.035);
+  color:var(--muted);font-family:var(--sans);font-size:14px;letter-spacing:.05em;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.secondary:active{background:rgba(255,231,203,.08)}
+/* ---------- 记录 ---------- */
+.log{border-top:1px solid var(--line);padding-top:12px}
+.log-head{display:flex;align-items:center;justify-content:space-between}
+.log-head span{font-size:12.5px;color:var(--muted);letter-spacing:.08em}
+.text-btn{background:none;border:none;color:var(--muted);font-size:12.5px;padding:8px 0 8px 8px;cursor:pointer;letter-spacing:.06em;font-family:var(--sans)}
+.text-btn:active{color:var(--text)}
+.log ul{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;max-height:34vh;overflow-y:auto}
+.log li{border-left:2px solid rgba(245,168,90,.35);padding:2px 0 2px 11px}
+.log .meta{font-size:11.5px;color:var(--muted);letter-spacing:.05em;margin-bottom:3px}
+.log .said{font-family:var(--serif);font-size:14.5px;line-height:1.6;color:#EBDCCA}
+.log .why{font-size:11.5px;color:rgba(168,148,128,.85);margin-top:3px;line-height:1.5}
+.empty{font-size:12.5px;color:rgba(168,148,128,.7);margin:8px 0 0;letter-spacing:.04em}
+/* ---------- 蒙层 / 面板 ---------- */
+.overlay{
+  position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(12,8,6,.62);
+  opacity:0;pointer-events:none;transition:opacity .28s ease;
+}
+.overlay.show{opacity:1;pointer-events:auto}
+.overlay.center{align-items:center;padding:20px}
+.sheet{
+  width:100%;max-width:560px;
+  max-height:88vh;
+  max-height:88dvh;
+  overflow-y:auto;overscroll-behavior:contain;
+  background:#241C16;border-top:1px solid rgba(255,231,203,.16);
+  border-radius:22px 22px 0 0;
+  padding:14px 20px calc(22px + env(safe-area-inset-bottom));
+  transform:translateY(14px);transition:transform .32s cubic-bezier(.22,1,.36,1);
+  -webkit-overflow-scrolling:touch;
+}
+.overlay.show .sheet{transform:translateY(0)}
+.sheet-handle{width:34px;height:3px;border-radius:2px;background:rgba(255,231,203,.22);margin:0 auto 16px}
+.sheet h2{font-size:17px;font-weight:600;letter-spacing:.06em;margin:0 0 6px}
+.hint{font-size:12.5px;line-height:1.65;color:var(--muted);margin:0 0 14px}
+.presets{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.preset{height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:transparent;
+  color:var(--muted);font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+.preset:active{background:rgba(255,231,203,.07)}
+label.field{display:block;margin-bottom:11px}
+label.field > span{display:block;font-size:12px;color:var(--muted);letter-spacing:.06em;margin-bottom:6px}
+label.field input{
+  width:100%;height:46px;border-radius:12px;border:1px solid var(--line);background:#1C1510;
+  color:var(--text);font-family:var(--sans);font-size:16px;padding:0 12px;outline:none;
+}
+label.field input:focus{border-color:rgba(245,168,90,.5)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:2px 0 14px;
+  border:1px solid var(--line);border-radius:13px;padding:4px}
+.seg button{height:38px;border-radius:10px;border:none;background:transparent;color:var(--muted);
+  font-size:13px;font-family:var(--sans);cursor:pointer;letter-spacing:.05em}
+.seg button.on{background:rgba(245,168,90,.16);color:var(--amber-soft)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;height:48px}
+.toggle span{font-size:14px}
+.switch{position:relative;width:48px;height:28px;border-radius:999px;background:rgba(255,231,203,.12);cursor:pointer;flex:none;
+  border:none;padding:0;-webkit-tap-highlight-color:transparent}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
+  background:#B7A08B;transition:transform .25s cubic-bezier(.22,1,.36,1),background .25s}
+.switch[aria-checked="true"]{background:rgba(245,168,90,.28)}
+.switch[aria-checked="true"]::after{transform:translateX(20px);background:var(--amber)}
+.sheet-actions{display:flex;flex-direction:column;gap:9px;margin:16px 0 12px}
+.fineprint{font-size:11.5px;line-height:1.7;color:rgba(168,148,128,.72);margin:0}
+/* ---------- 引导 ---------- */
+.intro-card{
+  width:100%;max-width:400px;background:#241C16;border:1px solid rgba(255,231,203,.16);
+  border-radius:24px;padding:26px 24px 22px;
+  max-height:86vh;max-height:86dvh;overflow-y:auto;overscroll-behavior:contain;
+  transform:translateY(8px);transition:transform .34s cubic-bezier(.22,1,.36,1);
+}
+.overlay.show .intro-card{transform:translateY(0)}
+.intro-face{width:76px;height:64px;margin:0 auto 16px;display:block}
+.intro-card h2{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.5;margin:0 0 10px;text-align:center;letter-spacing:.02em}
+.intro-card > p{font-size:13.5px;line-height:1.75;color:var(--muted);margin:0 0 16px;text-align:center}
+.intro-list{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:10px}
+.intro-list li{display:flex;gap:10px;font-size:13px;line-height:1.6;color:#D8C7B4}
+.intro-list li em{
+  font-style:normal;color:var(--amber);font-variant-numeric:tabular-nums;flex:none;width:16px;text-align:right;opacity:.9
+}
+.intro-card .primary{width:100%;letter-spacing:.06em}
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,14px);
+  max-width:min(88vw,360px);background:#33281F;border:1px solid rgba(255,231,203,.18);
+  color:var(--text);font-size:13px;line-height:1.6;padding:11px 16px;border-radius:13px;
+  opacity:0;pointer-events:none;transition:opacity .24s,transform .24s;z-index:80;text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (min-width:768px){
+  .wrap{padding-top:26px;gap:16px}
+  .face-wrap{height:min(38vh,340px)}
+  .subtitle{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <div class="brand">
+      <span class="brand-dot" id="statusDot"></span>
+      <div style="min-width:0">
+        <h1>阿和</h1>
+        <p class="mode-line" id="modeLine">客厅 · 待机</p>
+      </div>
+    </div>
+    <div class="bar-actions">
+      <button class="icon-btn" id="btnMute" aria-pressed="false" aria-label="静音">
+        <svg viewBox="0 0 24 24"><path d="M4 9v6h3l4 3V6l-4 3H4z"/><path id="muteWave" d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18.5 7a7.5 7.5 0 0 1 0 10" id="muteWave2"/></svg>
+      </button>
+      <button class="icon-btn" id="btnSettings" aria-label="设置">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 4.2v2M12 17.8v2M4.2 12h2M17.8 12h2M6.5 6.5l1.4 1.4M16.1 16.1l1.4 1.4M17.5 6.5l-1.4 1.4M7.9 16.1l-1.4 1.4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="face-wrap"><canvas id="face" aria-hidden="true"></canvas></div>
+    <div class="chip-row">
+      <span class="chip" id="stateChip"><i></i><span id="stateText">待机</span></span>
+      <span class="chip ghost" id="engineChip">内置话术</span>
+    </div>
+    <p class="subtitle" id="subtitle"><span class="dim">点下面那个按钮，我就开始听客厅。</span></p>
+    <form class="ask" id="askForm" autocomplete="off">
+      <input id="askInput" type="text" maxlength="80" placeholder="跟阿和说一句，比如「今晚吃什么」" aria-label="跟阿和说话">
+      <button type="submit" id="btnAsk" aria-label="发给阿和">
+        <svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+  </main>
+
+  <section class="panel" aria-label="实时读数">
+    <div class="panel-head"><span>此刻的火药味</span><strong id="scoreNum">0.00</strong></div>
+    <div class="track"><div class="fill" id="scoreFill"></div><div class="threshold" id="scoreMark"></div></div>
+    <div class="gauges">
+      <div class="gauge"><span>音量</span><i><b id="gLoud"></b></i></div>
+      <div class="gauge"><span>抢话</span><i><b id="gTurn"></b></i></div>
+      <div class="gauge"><span>不停顿</span><i><b id="gCont"></b></i></div>
+      <div class="gauge"><span>已守</span><i><b id="gTime"></b></i></div>
+    </div>
+  </section>
+
+  <div class="actions">
+    <button class="primary" id="btnStart">开始守客厅</button>
+    <div class="sub-actions">
+      <button class="secondary" id="btnPreview">听一句</button>
+      <button class="secondary" id="btnSnooze">安静 30 分钟</button>
+    </div>
+  </div>
+
+  <section class="log" id="logBox" hidden>
+    <div class="log-head"><span>介入记录</span><button class="text-btn" id="btnClearLog">清空</button></div>
+    <ul id="logList"></ul>
+    <p class="empty" id="logEmpty">还没有介入过。</p>
+  </section>
+</div>
+
+<!-- ===== 引导 ===== -->
+<div class="overlay center show" id="intro">
+  <div class="intro-card">
+    <svg class="intro-face" viewBox="0 0 76 64" aria-hidden="true">
+      <ellipse cx="38" cy="33" rx="27" ry="24" fill="#F0D6B6"/>
+      <ellipse cx="38" cy="33" rx="27" ry="24" fill="none" stroke="rgba(59,42,30,.12)" stroke-width="1.5"/>
+      <rect x="25" y="26" width="6" height="13" rx="3" fill="#3B2A1E"/>
+      <rect x="45" y="26" width="6" height="13" rx="3" fill="#3B2A1E"/>
+      <path d="M32 44 q6 5 12 0" stroke="#3B2A1E" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <h2>这座客厅里，<br>吵架的时候少一个人。</h2>
+    <p>我是阿和。座位在茶几上，不站队，不评理，只负责在火最大的那一秒说一句人话。</p>
+    <ul class="intro-list">
+      <li><em>1</em><span>我只在本地听声音的高低、快慢、抢话，录音不上传。</span></li>
+      <li><em>2</em><span>只有判断到「像在吵架」，才会把最近几秒音频发给模型听一次。</span></li>
+      <li><em>3</em><span>等你俩有人喘气的那个空档，我才开口。</span></li>
+      <li><em>4</em><span>叫一声「阿和」，或者打字问我；吵起来了，我就自己插嘴。</span></li>
+    </ul>
+    <button class="primary" id="btnAllow">允许我听客厅</button>
+    <button class="text-btn" id="btnIntroSkip" style="width:100%;text-align:center;margin-top:6px">先不开麦克风，看看界面</button>
+  </div>
+</div>
+
+<!-- ===== 设置 ===== -->
+<div class="overlay" id="sheet">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="设置">
+    <div class="sheet-handle"></div>
+    <h2>给阿和接个大脑</h2>
+    <p class="hint">点你密钥对应的平台，粘上密钥，地址和模型名已经配好。注意：地址和密钥必须是同一家的，混着填就会一直报 401。</p>
+    <div class="presets">
+      <button class="preset" data-set="dashscope">阿里百炼</button>
+      <button class="preset" data-set="silicon">硅基流动</button>
+      <button class="preset" data-set="openai">OpenAI</button>
+      <button class="preset" data-set="clear">清空密钥</button>
+    </div>
+    <label class="field"><span>接口地址</span><input id="inpBase" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://api.siliconflow.cn/v1"></label>
+    <label class="field"><span>密钥</span><input id="inpKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-..."></label>
+    <div class="two">
+      <label class="field"><span>转写模型</span><input id="inpAsr" autocomplete="off" spellcheck="false" placeholder="留空也行"></label>
+      <label class="field"><span>对话模型</span><input id="inpChat" autocomplete="off" spellcheck="false" placeholder="qwen-plus"></label>
+    </div>
+    <div class="two">
+      <label class="field"><span>转写地址</span><input id="inpAsrBase" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://api.siliconflow.cn/v1"></label>
+      <label class="field"><span>转写密钥</span><input id="inpAsrKey" type="password" autocomplete="off" spellcheck="false" placeholder="留空就只听声音"></label>
+    </div>
+    <p class="fineprint" style="margin:-4px 0 14px">转写这几栏可以全留空。阿里百炼没有网页能直调的转写接口（我实测是 404），所以想「听懂在吵什么」，要单独填一家：硅基流动的地址已预填，密钥去它官网拿，模型填 FunAudioLLM/SenseVoiceSmall（这个免费）。留空时我只听音量、抢话、停顿，话术会更泛用。</p>
+    <label class="field"><span>敏感度（越敏感越容易被小事惊动）</span></label>
+    <div class="seg" id="segSens">
+      <button data-sens="soft">迟钝</button>
+      <button data-sens="std">标准</button>
+      <button data-sens="sens">敏感</button>
+    </div>
+    <div class="toggle">
+      <span>出声说话</span>
+      <button class="switch" id="swVoice" role="switch" aria-checked="true" aria-label="出声说话"></button>
+    </div>
+    <div class="toggle" style="height:40px">
+      <span style="font-size:13px;color:var(--muted)">手机上有没有中文声音</span>
+      <button class="text-btn" id="btnVoiceCheck">检测语音</button>
+    </div>
+    <p class="fineprint" id="voiceStatus" style="margin-bottom:12px">还没检测。</p>
+    <div class="toggle" style="height:40px">
+      <span style="font-size:13px;color:var(--muted)">麦克风能不能收音</span>
+      <button class="text-btn" id="btnMicCheck">检测麦克风</button>
+    </div>
+    <p class="fineprint" id="micStatus" style="margin-bottom:12px">还没测过。测的时候对着手机说句话。</p>
+    <div class="toggle">
+      <span>叫名字就应答</span>
+      <button class="switch" id="swWake" role="switch" aria-checked="true" aria-label="叫名字就应答"></button>
+    </div>
+    <p class="fineprint" id="wakeStatus" style="margin-bottom:12px">还没开始。</p>
+    <div class="toggle" style="height:40px">
+      <span style="font-size:13px;color:var(--muted)">这条链路通不通</span>
+      <button class="text-btn" id="btnAsrProbe">试一次转写</button>
+    </div>
+    <p class="fineprint" id="asrProbe" style="margin-bottom:12px">点一下，录三秒，看它到底听成了什么。</p>
+    <p class="fineprint" style="margin-bottom:12px">语音识别这条路要看设备给不给。给不了也不影响用——中间的输入框打字问我，一样能答。</p>
+    <div class="sheet-actions">
+      <button class="primary" id="btnSave">保存</button>
+      <button class="secondary" id="btnCheck">检查模型连接</button>
+      <button class="secondary" id="btnTest">拿一段模拟争执试一下</button>
+      <button class="text-btn" id="btnCloseSheet" style="text-align:center">关掉</button>
+    </div>
+    <p class="fineprint">密钥只存在这台手机本地，不会上传到别处；所有请求直接发往你填的接口地址。iPhone 如果听不见声音，请把侧边静音键拨回来。</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+var $ = function(id){ return document.getElementById(id); };
+var clamp = function(v,a,b){ return Math.min(b, Math.max(a, v)); };
+var sleep = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================= 配置与状态 ================= */
+var SENS = { soft:0.76, std:0.66, sens:0.56 };
+var PRESETS = {
+  dashscope: { baseUrl:'https://dashscope.aliyuncs.com/compatible-mode/v1', asrModel:'', chatModel:'qwen-plus' },
+  silicon: { baseUrl:'https://api.siliconflow.cn/v1', asrModel:'FunAudioLLM/SenseVoiceSmall', chatModel:'Qwen/Qwen2.5-7B-Instruct' },
+  openai:  { baseUrl:'https://api.openai.com/v1', asrModel:'whisper-1', chatModel:'gpt-4o-mini' }
+};
+var DEFAULTS = {
+  baseUrl:'https://dashscope.aliyuncs.com/compatible-mode/v1', apiKey:'',
+  asrModel:'', chatModel:'qwen-plus',
+  asrBase:'https://api.siliconflow.cn/v1', asrKey:'',
+  sens:'std', voice:true, mute:false, wake:true
+};
+
+var S = {
+  running:false,
+  state:'idle',
+  level:0,
+  score:0,
+  baseline:-56,
+  startedAt:0,
+  cooldownUntil:0,
+  snoozeUntil:0,
+  speaking:false,
+  talkUntil:0,
+  settings: Object.assign({}, DEFAULTS),
+  metrics:{ loud:0, turn:0, cont:0 },
+  heard:[],
+  wakeOk:false,
+  dialogMode:false,
+  dialogQ:'',
+  dialogUntil:0,
+  log:[]
+};
+
+var audio = { ctx:null, analyser:null, stream:null, tbuf:null, mime:'' };
+var feat = { dbMax:-90, frames:0, active:0, switches:0, silences:0, quietMs:0, flagged:false, lastT:0 };
+var spk = { c1:0, c2:0, n:0, last:0 };
+
+/* ================= 持久化 ================= */
+function loadStored(){
+  try{
+    var raw = localStorage.getItem('ahe.settings.v1');
+    if(raw){ var o = JSON.parse(raw); Object.keys(DEFAULTS).forEach(function(k){ if(o[k]!==undefined) S.settings[k]=o[k]; }); }
+    S.settings.baseUrl = normBase(S.settings.baseUrl);
+    S.settings.apiKey = normKey(S.settings.apiKey);
+    var lg = localStorage.getItem('ahe.log.v1');
+    if(lg){ var arr = JSON.parse(lg); if(Array.isArray(arr)) S.log = arr.slice(0,20); }
+  }catch(e){}
+}
+function saveSettings(){
+  try{ localStorage.setItem('ahe.settings.v1', JSON.stringify(S.settings)); }catch(e){}
+}
+function saveLog(){
+  try{ localStorage.setItem('ahe.log.v1', JSON.stringify(S.log.slice(0,20))); }catch(e){}
+}
+
+/* ================= 说话 / 提示 ================= */
+var toastTimer = null;
+function toast(msg){
+  var el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 3000);
+}
+
+var revealTimer = null;
+function revealText(text, onDone){
+  var el = $('subtitle');
+  clearTimeout(revealTimer);
+  el.textContent = '';
+  el.classList.toggle('long', text.length > 90);
+  var i = 0, n = text.length;
+  S.talkUntil = performance.now() + n*190 + 500;
+  function step(){
+    i++;
+    el.textContent = text.slice(0,i);
+    if(text.length > 90) el.scrollTop = el.scrollHeight;
+    if(i < n){ revealTimer = setTimeout(step, 190); }
+    else if(onDone){ onDone(); }
+  }
+  step();
+}
+
+var VOICE_PREF = ['Xiaoxiao','晓晓','Huihui','慧慧','Yaoyao','瑶瑶','Tingting','婷婷','Meijia','美嘉','Xiaoyi','晓伊','女','Female'];
+function pickVoice(){
+  if(!window.speechSynthesis) return null;
+  var vs = [];
+  try{ vs = speechSynthesis.getVoices() || []; }catch(e){ return null; }
+  var zh = vs.filter(function(v){ return /zh|cmn|Chinese/i.test((v.lang||'') + (v.name||'')); });
+  if(!zh.length) return null;
+  for(var i=0;i<VOICE_PREF.length;i++){
+    for(var j=0;j<zh.length;j++){
+      if((zh[j].name||'').indexOf(VOICE_PREF[i]) >= 0) return zh[j];
+    }
+  }
+  return zh[0];
+}
+
+var voicePrimed = false;
+var voiceWarned = false;
+
+/* 浏览器规定：第一次发声必须发生在用户点击的同一个动作里，否则之后怎么叫都不出声 */
+function unlockVoice(){
+  try{ unlockAudio(); }catch(e){}
+  if(voicePrimed || !window.speechSynthesis) return;
+  voicePrimed = true;
+  try{
+    var u = new SpeechSynthesisUtterance(' ');
+    u.volume = 0.02; u.rate = 1; u.lang = 'zh-CN';
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function renderVoiceStatus(){
+  var el = $('voiceStatus');
+  if(!el) return;
+  if(canCloudTTS()){
+    el.textContent = '已接百炼：固定用 Cherry 这个女声（千问合成音），每次都是同一个声音，不跟着手机的发音人乱换。';
+    return;
+  }
+  if(!window.speechSynthesis){ el.textContent = '这台浏览器不支持语音合成，只能出字幕。'; return; }
+  var vs = [];
+  try{ vs = speechSynthesis.getVoices() || []; }catch(e){}
+  if(!vs.length){ el.textContent = '还没读到语音引擎（有些浏览器要按一下上面「检测语音」才加载）。'; return; }
+  var zh = vs.filter(function(v){ return /zh|cmn|Chinese/i.test((v.lang||'') + (v.name||'')); });
+  if(!zh.length){ el.textContent = '读到 ' + vs.length + ' 个发音人，但没有中文的——去手机设置里装一个中文语音包。'; return; }
+  var v = pickVoice();
+  el.textContent = '中文发音人 ' + zh.length + ' 个，当前用：' + (v ? v.name + '（' + v.lang + '）' : '系统默认');
+}
+
+function voiceFailing(){
+  S.speaking = false;
+  renderVoiceStatus();
+  if(voiceWarned) return;
+  voiceWarned = true;
+  toast('没听到声音：先看手机侧边静音键，再去系统设置里装个中文语音包。字幕我照常给。');
+}
+
+/* ================= 云端朗读（百炼 qwen3-tts） ================= */
+var TTS_MODEL = 'qwen3-tts-flash';
+var TTS_VOICE = 'Cherry';
+var SILENT_WAV = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+var player = null, playerPrimed = false;
+
+function ensurePlayer(){
+  if(!player){
+    player = new Audio();
+    player.preload = 'auto';
+  }
+  return player;
+}
+function unlockAudio(){
+  if(playerPrimed) return;
+  playerPrimed = true;
+  try{
+    var p = ensurePlayer();
+    p.src = SILENT_WAV;
+    var pr = p.play();
+    if(pr && pr.catch) pr.catch(function(){});
+  }catch(e){}
+}
+function canCloudTTS(){
+  return !!(S.settings.apiKey && S.settings.baseUrl && /dashscope|aliyuncs/i.test(S.settings.baseUrl));
+}
+function nativeBase(){
+  return S.settings.baseUrl.replace(/\/compatible-mode.*$/i, '').replace(/\/+$/, '') + '/api/v1';
+}
+async function requestTTS(text){
+  var r = await fetchWithTimeout(nativeBase() + '/services/aigc/multimodal-generation/generation', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + S.settings.apiKey },
+    body: JSON.stringify({
+      model: TTS_MODEL,
+      input: { text: text, voice: TTS_VOICE, language_type: 'Chinese' }
+    })
+  }, 20000);
+  if(!r.ok) throw new Error('TTS HTTP ' + r.status);
+  var j = await r.json();
+  var url = j && j.output && j.output.audio ? j.output.audio.url : '';
+  return url || '';
+}
+function playAudio(url, text, opts){
+  var p = ensurePlayer();
+  var done = false;
+  function finish(){
+    if(done) return; done = true; S.speaking = false;
+    if(opts.after) opts.after();
+  }
+  function bail(){
+    if(done) return; done = true; S.speaking = false;
+    localSpeak(text, opts);
+  }
+  p.onended = finish;
+  p.onpause = function(){ if(!p.ended) S.speaking = false; };
+  p.onplaying = function(){
+    S.speaking = true;
+    S.talkUntil = performance.now() + text.length * 190 + 800;
+    revealText(text, null);
+  };
+  p.onerror = bail;
+  S.speaking = true;
+  try{
+    p.src = url;
+    var pr = p.play();
+    if(pr && pr.catch) pr.catch(bail);
+  }catch(e){ bail(); }
+}
+async function cloudSpeak(text, opts){
+  S.talkUntil = performance.now() + text.length * 190 + 1200;
+  var url = '';
+  try{ url = await requestTTS(text); }catch(e){ url = ''; }
+  if(!url || !S.settings.voice){ localSpeak(text, opts); return; }
+  playAudio(url, text, opts);
+}
+
+var silentNoted = false;
+function noteSilent(){
+  if(silentNoted) return;
+  silentNoted = true;
+  toast('现在是静音状态：点右上角喇叭，或到设置里打开「出声说话」。');
+}
+
+function speak(text, opts){
+  opts = opts || {};
+  if(S.settings.mute || !S.settings.voice){ revealText(text, opts.after); noteSilent(); return; }
+  if(S.speaking){
+    try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+    try{ if(player && !player.paused) player.pause(); }catch(e){}
+    S.speaking = false;
+  }
+  if(canCloudTTS()){ cloudSpeak(text, opts); return; }
+  localSpeak(text, opts);
+}
+
+function localSpeak(text, opts){
+  opts = opts || {};
+  revealText(text, opts.after);
+  if(!window.speechSynthesis) return;
+  speakOnce(text, 0);
+}
+
+function speakOnce(text, attempt){
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = 0.93; u.pitch = 1.08; u.volume = 0.9;
+  /* 声音固定：重试也不换发音人，只把音量顶上去 */
+  var v = pickVoice();
+  if(v){ u.voice = v; u.lang = v.lang || 'zh-CN'; }
+  if(attempt > 0){ u.volume = 1; }
+  var started = false, ended = false;
+  if(attempt === 0) S.speaking = true;
+  u.onstart = function(){ started = true; };
+  u.onend = u.onerror = function(){ ended = true; S.speaking = false; };
+
+  try{
+    if(window.speechSynthesis) speechSynthesis.resume();
+    speechSynthesis.speak(u);
+  }catch(e){
+    if(attempt < 1) setTimeout(function(){ speakOnce(text, 1); }, 150);
+    else voiceFailing();
+    return;
+  }
+
+  setTimeout(function(){
+    if(!started && !ended){
+      S.speaking = false;
+      if(attempt < 1){
+        try{ speechSynthesis.cancel(); }catch(e){}
+        setTimeout(function(){ speakOnce(text, 1); }, 150);
+      }else{
+        voiceFailing();
+      }
+    }
+  }, 1600);
+}
+if(window.speechSynthesis){ speechSynthesis.onvoiceschanged = function(){ pickVoice(); }; }
+
+function chime(){
+  if(!audio.ctx || S.settings.mute) return;
+  try{
+    var t0 = audio.ctx.currentTime;
+    [784, 1174].forEach(function(f,i){
+      var o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t0 + i*0.17);
+      g.gain.linearRampToValueAtTime(0.10, t0 + i*0.17 + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + i*0.17 + 0.55);
+      o.connect(g); g.connect(audio.ctx.destination);
+      o.start(t0 + i*0.17); o.stop(t0 + i*0.17 + 0.6);
+    });
+  }catch(e){}
+}
+
+/* ================= 听懂人话：叫名字 / 提问 ================= */
+var recog = null;
+var dialogTimer = null;
+
+function hasSR(){
+  return !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+}
+
+function pushHeard(t){
+  t = (t || '').trim();
+  if(!t) return;
+  S.heard.push({ t: Date.now(), text: t });
+  var cut = Date.now() - 20000;
+  S.heard = S.heard.filter(function(x){ return x.t > cut; });
+  if(S.heard.length > 24) S.heard = S.heard.slice(-24);
+}
+function recentHeard(){
+  var cut = Date.now() - 14000;
+  return S.heard.filter(function(x){ return x.t > cut; }).map(function(x){ return x.text; }).join('；');
+}
+
+function sysName(){
+  var ua = navigator.userAgent || '';
+  if(/iPad|iPhone|iPod/.test(ua)) return 'iPhone / iPad';
+  if(/Android/.test(ua)) return '安卓';
+  if(/Macintosh/.test(ua)) return 'Mac';
+  if(/Windows/.test(ua)) return 'Windows';
+  return '这台设备';
+}
+function renderWakeStatus(){
+  var el = $('wakeStatus');
+  if(!el) return;
+  if(!hasSR() && S.settings.asrKey){
+    if(!S.settings.wake){ el.textContent = '已关闭。关掉后只做劝架，不听你叫它。'; return; }
+    if(!S.running){ el.textContent = '等「守客厅」开始后才听得见你叫它。'; return; }
+    el.textContent = '在听：系统不给语音识别，所以我每隔两三秒把一小段有声音的话发去转成文字，听见「阿和」就应。'
+      + (S.asrOk ? '已转写 ' + S.asrOk + ' 次，最近一句「' + (S.asrLast || '') + '」。' : '还没有转成功的记录。')
+      + (S.asrErr ? ' 最近一次失败：' + S.asrErr : '');
+    return;
+  }
+  if(!hasSR()){
+    el.textContent = '查过了：' + sysName() + ' 的这个浏览器不提供语音识别接口。你喊「阿和」，不是它没听见——是这个能力根本没交到网页手里；麦克风是另一条权限，那条是通的。填上「转写密钥」就能绕过去，或者用中间输入框打字。';
+    return;
+  }
+
+  if(!S.settings.wake){ el.textContent = '已关闭。关掉后只做劝架，不听你叫它。'; return; }
+  if(!S.running){ el.textContent = '等「守客厅」开始后才听得见你叫它。'; return; }
+  if(!S.wakeOk){ el.textContent = '语音识别被系统拒了（多半是麦克风被录音占用）。点我的脸也能叫醒。'; return; }
+  el.textContent = '正在听。叫一声「阿和」，我就应答。';
+}
+
+function startWake(){
+  stopWake();
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR || !S.settings.wake){ S.wakeOk = false; renderWakeStatus(); return; }
+  try{
+    recog = new SR();
+    recog.lang = 'zh-CN';
+    recog.continuous = true;
+    recog.interimResults = true;
+    recog.maxAlternatives = 1;
+    recog.onresult = function(e){
+      var interim = '', finalTxt = '';
+      for(var i = e.resultIndex; i < e.results.length; i++){
+        var r = e.results[i];
+        if(r.isFinal) finalTxt += r[0].transcript;
+        else interim += r[0].transcript;
+      }
+      if(finalTxt) checkText(finalTxt, true);
+      if(interim) checkText(interim, false);
+    };
+    recog.onerror = function(e){
+      var err = e && e.error;
+      if(err === 'not-allowed' || err === 'service-not-allowed' || err === 'audio-capture'){
+        S.wakeOk = false;
+        renderWakeStatus();
+      }
+    };
+    recog.onend = function(){
+      if(S.running && S.settings.wake && S.wakeOk){
+        setTimeout(function(){
+          if(S.running && recog){ try{ recog.start(); }catch(e){} }
+        }, 700);
+      }
+    };
+    recog.start();
+    S.wakeOk = true;
+  }catch(e){
+    S.wakeOk = false;
+  }
+  renderWakeStatus();
+}
+
+function stopWake(){
+  if(recog){
+    try{ recog.abort(); }catch(e){}
+    recog = null;
+  }
+}
+
+function checkText(txt, isFinal){
+  if(!txt) return;
+  if(isFinal) pushHeard(txt);
+  if(!S.settings.wake) return;
+  if(S.dialogMode){
+    if(isFinal && txt.trim()){
+      S.dialogQ = (S.dialogQ ? S.dialogQ + ' ' : '') + txt.trim();
+      S.dialogUntil = Date.now() + 9000;
+      clearTimeout(dialogTimer);
+      dialogTimer = setTimeout(finishDialog, 700);
+    }
+    if(S.dialogQ) return; /* 空问题不再从分片里补，交给下面的 awaitQ 窗口 */
+    return;
+  }
+  /* 刚应完「我在」，这九秒里说的话就是问题本身 */
+  if(S.awaitQ && Date.now() < S.awaitQ){
+    var q0 = (txt || '').trim();
+    if(q0.length >= 2){
+      S.awaitQ = 0;
+      S.dialogMode = true;
+      S.dialogQ = q0;
+      setState('dialog');
+      $('subtitle').textContent = q0;
+      clearTimeout(dialogTimer);
+      dialogTimer = setTimeout(finishDialog, 80);
+      return;
+    }
+  }
+  var idx = txt.search(/阿[和禾河赫]/);
+  if(idx >= 0){
+    var after = txt.slice(idx + 2).replace(/^[，,、。.!！?？\s]+/, '').trim();
+    enterDialog(after);
+  }
+}
+
+function enterDialog(q){
+  if(S.state === 'speak') return;
+  unlockVoice();
+  S.dialogMode = true;
+  S.dialogQ = (q || '').trim();
+  S.dialogUntil = Date.now() + 9000;
+  setState('dialog');
+  $('subtitle').textContent = S.dialogQ ? S.dialogQ : '我在。';
+  clearTimeout(dialogTimer);
+  /* 一次就把问题说完的，不用再等两秒 */
+  dialogTimer = setTimeout(finishDialog, S.dialogQ ? 60 : 3000);
+}
+
+/* 打字问它：不用等，直接进对话流程 */
+function askNow(q){
+  q = (q || '').trim();
+  if(!q) return;
+  unlockVoice();
+  S.awaitQ = 0;
+  S.dialogMode = true;
+  S.dialogQ = q;
+  setState('dialog');
+  $('subtitle').textContent = q;
+  clearTimeout(dialogTimer);
+  dialogTimer = setTimeout(finishDialog, 60);
+}
+
+var ASSISTANT_PROMPT = [
+  '你是阿和，一个住在人家客厅茶几上的小方块机器人，身高一个茶杯。现在家里有人在跟你说话。',
+  '规则：',
+  '1. 正常回答，一般两到四句，不超过 120 字。先说结论，再说要点，必要时用「一、二、三」列，不用星号和 emoji。',
+  '2. 你懂日常生活的绝大部分事：宠物护理、做饭、家电、健康常识、育儿、学习、办事流程、常识科普。这类问题就正常答，答得具体、有用，别推说不知道。',
+  '3. 涉及医疗、用药、宠物手术、法律这类可能出事的，讲通用原则和该注意的地方，然后说一句「具体还是问医生/兽医」。不给剂量，不做诊断，不替代专业意见。',
+  '4. 价格、政策、实时信息这类会变的，说你不确定、让对方去查，别编数字。',
+  '5. 可以幽默，但幽默来自具体的、有点笨的比方（比如拿自己的小身板、只有一块屏幕、容易落灰开玩笑），不是来自俏皮话堆叠。不许油、不许卖萌、不许网络热梗，不拿对方和家人开玩笑。',
+  '6. 如果有人让你闭嘴或安静，就回答「好，我闭嘴」，态度痛快。',
+  '7. 只输出要说的话本身：不要引号，不要解释，不要括号里的动作提示。'
+].join('\n');
+
+async function askAssistant(q){
+  if(!q) return '';
+  if(!S.settings.apiKey || !S.settings.baseUrl) return '';
+  var payload = {
+    model: S.settings.chatModel,
+    temperature: 0.85,
+    max_tokens: 400,
+    messages: [
+      { role:'system', content: ASSISTANT_PROMPT },
+      { role:'user', content: q }
+    ]
+  };
+  var r = await fetchWithTimeout(joinUrl(S.settings.baseUrl, 'chat/completions'), {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + S.settings.apiKey },
+    body: JSON.stringify(payload)
+  }, 20000);
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  var j = await r.json();
+  var txt = j && j.choices && j.choices[0] && j.choices[0].message ? j.choices[0].message.content : '';
+  return String(txt || '').replace(/^["'“”]+|["'“”]+$/g, '').trim().slice(0, 320);
+}
+
+async function finishDialog(){
+  if(!S.dialogMode) return;
+  S.dialogMode = false;
+  clearTimeout(dialogTimer);
+  var q = (S.dialogQ || '').trim();
+  S.dialogQ = '';
+  if(!q){
+    setState('speak');
+    chime();
+    /* 说完「我在」别退场，留一个窗口等你把问题说完 */
+    speak('我在。', { after:function(){
+      setState(S.running ? 'listen' : 'idle');
+      S.awaitQ = Date.now() + 9000;
+    }});
+    return;
+  }
+  if(/闭嘴|安静|别说话|不要说话|别管|别吵/.test(q) && q.length < 16){
+    S.snoozeUntil = Date.now() + 10 * 60 * 1000;
+    setState('speak');
+    chime();
+    speak('好，我闭嘴。叫我我再出来。', { after:function(){ setState('snooze'); } });
+    return;
+  }
+  var say = '';
+  if(!S.settings.apiKey){
+    setState('speak');
+    chime();
+    speak('我还没接上大脑，答不上来。点右上角齿轮给我接一个，我就能跟你聊了。', {
+      after:function(){ setState(S.running ? 'listen' : 'idle'); }
+    });
+    return;
+  }
+  setState('think');
+  var errMsg = '';
+  try{ say = await askAssistant(q); }catch(e){ say = ''; errMsg = explainErr(e); }
+  if(!say){
+    say = S.settings.apiKey
+      ? '这个我答不上来。' + (errMsg ? '（' + errMsg.slice(0, 40) + '）' : '')
+      : '这个我答不上来，还没接上大脑。';
+    toast('对话失败：' + (errMsg || '模型返回了空内容'));
+  }
+  setState('speak');
+  chime();
+  speak(say, { after:function(){ setState(S.running ? 'listen' : 'idle'); } });
+}
+
+
+var STATE_TEXT = { idle:'待机', calib:'熟悉环境', listen:'听着', suspect:'有点不对', think:'在想词', wait:'等空档', speak:'插一句', cool:'缓一缓', snooze:'装睡', dialog:'对话中' };
+var HINT = {
+  idle:'点下面那个按钮，我就开始听客厅。',
+  calib:'先别说话，我熟悉一下你家安静时候的声音。',
+  listen:'我在听。叫一声「阿和」我就过来。',
+  suspect:'这个节奏不太对，我先听清楚。',
+  think:'让我想一句不夹带私货的话。',
+  wait:'等一个人说完了，我再接。',
+  speak:'',
+  cool:'说完了。我缓一会儿，别嫌我烦。',
+  snooze:'好，我闭嘴。三十分钟后再说。',
+  dialog:'我在。你说。'
+};
+function setState(st){
+  S.state = st;
+  var chip = $('stateChip');
+  chip.className = 'chip' + ((st==='suspect'||st==='wait')?' hot':'');
+  $('stateText').textContent = STATE_TEXT[st] || st;
+  var dot = $('statusDot');
+  dot.className = 'brand-dot' + (st==='idle'?'':(st==='suspect'||st==='wait'?' hot':' live'));
+  if(st!=='speak' && HINT[st] !== undefined && !S.speaking && performance.now() > S.talkUntil){
+    $('subtitle').textContent = HINT[st];
+  }
+  if(st==='speak'){ S.talkUntil = Math.max(S.talkUntil, performance.now()); }
+}
+function renderEngine(){
+  $('engineChip').textContent = S.settings.apiKey
+    ? (S.settings.asrKey ? '已接模型 · 懂内容' : (S.settings.asrModel ? '已接模型' : '已接模型 · 只听声音'))
+    : '内置话术';
+}
+
+/* ================= 音频采集 ================= */
+function pickMime(){
+  if(!window.MediaRecorder) return '';
+  var list = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg'];
+  for(var i=0;i<list.length;i++){ if(MediaRecorder.isTypeSupported(list[i])) return list[i]; }
+  return '';
+}
+
+async function startRun(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    setState('idle');
+    toast('这个环境不给开麦克风：要么不是 https，要么是 App 内置浏览器把它关了。把链接复制到系统浏览器里打开，再点一次。');
+    return;
+  }
+  try{
+    audio.stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation:false, noiseSuppression:true, autoGainControl:false, channelCount:1 }
+    });
+  }catch(e){
+    var n = (e && e.name) || '';
+    setState('idle');
+    toast(micErrText(n));
+    return;
+  }
+  try{
+    audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    await audio.ctx.resume();
+    var src = audio.ctx.createMediaStreamSource(audio.stream);
+    var an = audio.ctx.createAnalyser();
+    an.fftSize = 2048; an.smoothingTimeConstant = 0.35;
+    src.connect(an);
+    audio.srcNode = src;
+    audio.analyser = an;
+    audio.tbuf = new Float32Array(an.fftSize);
+    audio.mime = pickMime();
+  }catch(e){
+    toast('音频初始化失败，换个浏览器试试。');
+    return;
+  }
+  S.running = true;
+  S.startedAt = Date.now();
+  S.score = 0; S.level = 0;
+  S.heard = [];
+  resetFeat();
+  $('btnStart').textContent = '先歇会儿';
+  $('btnStart').classList.add('is-on');
+  $('logBox').hidden = false;
+  keepAwake();
+  watchBattery();
+  startCalib();
+}
+
+/* ================= 客厅模式：常亮 / 校准 / 电量 / 断网 ================= */
+var wakeLock = null;
+async function keepAwake(){
+  if(!('wakeLock' in navigator)) return false;
+  if(wakeLock) return true;
+  try{
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', function(){ wakeLock = null; });
+    return true;
+  }catch(e){ return false; }
+}
+async function dropWake(){
+  try{ if(wakeLock) await wakeLock.release(); }catch(e){}
+  wakeLock = null;
+}
+
+var calib = { on:false, t0:0, ds:[] };
+var CALIB_MS = 20000;
+
+function startCalib(){
+  calib.on = true; calib.t0 = Date.now(); calib.ds = [];
+  S.baseline = -56;
+  overSince = 0;
+  setState('calib');
+  chime();
+  if(!('wakeLock' in navigator)){
+    setTimeout(function(){ toast('这台设备不给自动常亮，去系统设置里把「自动锁屏」改成永不，不然屏会灭。'); }, 1200);
+  }
+}
+function endCalib(){
+  if(!calib.on) return;
+  calib.on = false;
+  var ds = calib.ds.slice().sort(function(a,b){ return a-b; });
+  if(ds.length >= 8){
+    var q = ds[Math.floor(ds.length * 0.35)];
+    S.baseline = clamp(q + 2, -72, -34);
+    try{ localStorage.setItem('ahe.base.v1', String(Math.round(S.baseline))); }catch(e){}
+  }
+  resetFeat();
+  setState('listen');
+  startWake();
+  startCloudWake();
+  speak('记下了：' + Math.round(S.baseline) + ' 分贝算你家的静，超过这个我才当回事。', { after:null });
+}
+
+function watchBattery(){
+  if(!navigator.getBattery) return;
+  navigator.getBattery().then(function(b){
+    var warned = false;
+    function check(){
+      if(b.level < 0.2 && !warned && S.running){
+        warned = true;
+        toast('电量只剩 ' + Math.round(b.level * 100) + '% 了，插上电，不然我一会儿就哑了。');
+      }
+      if(b.level > 0.35) warned = false;
+    }
+    check();
+    try{ b.addEventListener('levelchange', check); }catch(e){}
+  }).catch(function(){});
+}
+
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden){ S.hiddenAt = Date.now(); return; }
+  var away = S.hiddenAt ? Date.now() - S.hiddenAt : 0;
+  S.hiddenAt = 0;
+  if(S.running){
+    keepAwake();
+    if(away > 3000){ toast('你切出去那 ' + Math.round(away / 1000) + ' 秒，浏览器把声音掐了，那会儿我没在听。'); }
+  }
+});
+window.addEventListener('offline', function(){ toast('网断了。我现在只听声音的动静，出不了主意。'); });
+window.addEventListener('online', function(){ toast('网回来了，接得上了。'); });
+
+var wakeBusy = false;
+var wakeTimer = null;
+var wakeFail = 0;
+
+/* 链路自检：录三秒就转，把结果和失败原因直接摊在界面上 */
+async function probeTranscribe(){
+  var el = $('asrProbe');
+  function say(t){ if(el) el.textContent = t; }
+  if(!S.settings.asrKey){ say('没填「转写密钥」。这一栏空着，叫名字这条链路根本不会启动。'); return; }
+  if(!window.MediaRecorder){ say('这个浏览器不支持录音（MediaRecorder 缺失）。'); return; }
+  say('在录了，对着手机说一句……');
+  var own = null;
+  if(!audio.stream){
+    try{ own = await navigator.mediaDevices.getUserMedia({ audio:true }); }
+    catch(e){ say(micErrText((e && e.name) || '')); return; }
+    audio.stream = own;
+  }
+  var blob = null;
+  try{ blob = await capture(3000); }catch(e){ blob = null; }
+  if(own){ try{ own.getTracks().forEach(function(t){ t.stop(); }); }catch(e){} audio.stream = null; }
+  if(!blob || !blob.size){ say('没录到东西（' + (blob ? blob.size + ' 字节' : '空') + '）。'); return; }
+  say('录到 ' + Math.round(blob.size / 1024) + 'KB，正在送去转写……');
+  try{
+    var txt = await transcribe(blob);
+    if(txt){ say('转出来了：「' + txt + '」。' + (/阿[和禾河赫]/.test(txt) ? '里面认出「阿和」了，喊名字应该能应。' : '这段里没「阿和」，正常；喊一声名字再试。')); }
+    else say('转写接口回了空文字。多半是模型名不对，或者录音里没人声。');
+  }catch(e){
+    say('转写失败：' + explainErr(e));
+  }
+}
+
+/* 云端叫名字：每 2.6 秒听一段，只有这一段里真有人说话，才发出去转一下 */
+async function wakeTick(){
+  clearTimeout(wakeTimer);
+  if(!S.wakeCloudOn) return;
+  S.wakeBeat = Date.now();
+  try{
+    await wakeCycle();
+  }catch(e){
+    S.asrErr = '循环出错：' + (((e && e.message) || e) + '').slice(0, 60);
+  }finally{
+    wakeBusy = false;
+    if(S.wakeCloudOn) wakeTimer = setTimeout(wakeTick, 250);
+  }
+}
+
+async function wakeCycle(){
+  if(!S.running || !S.settings.wake || !S.settings.asrKey || !audio.stream || calib.on) return;
+  if(wakeBusy || S.speaking || ['speak','think','suspect','wait'].indexOf(S.state) >= 0) return;
+  wakeBusy = true;
+  var mx = 0, t0 = performance.now();
+  var cap = capture(2200);
+  var th = clamp((S.baseline + 7 + 62) / 40, 0.1, 0.95);
+  while(performance.now() - t0 < 2300){
+    if(S.level > mx) mx = S.level;
+    await sleep(110);
+  }
+  var blob = null;
+  try{ blob = await Promise.race([cap, sleep(4200).then(function(){ return null; })]); }catch(e){ blob = null; }
+  if(blob && mx >= th){
+    try{
+      var txt = await transcribe(blob);
+      if(txt){ S.asrOk = (S.asrOk||0) + 1; S.asrLast = txt.slice(0, 36); S.asrErr = ''; wakeFail = 0; checkText(txt, true); }
+    }catch(e){
+      S.asrBad = (S.asrBad||0) + 1;
+      S.asrErr = explainErr(e).slice(0, 70);
+      wakeFail++;
+    }
+  }else if(blob && mx < th){
+    /* 有声但没录到内容，多半是流坏了 */
+  }else if(!blob){
+    wakeFail++;
+  }
+  if(wakeFail >= 3 && S.running){ wakeFail = 0; rebuildAudio(); }
+}
+
+/* 连续失败就重新拉一次麦克风和音频节点，别拖着坏的流 */
+async function rebuildAudio(){
+  try{
+    try{ if(audio.rec && audio.rec.state !== 'inactive') audio.rec.stop(); }catch(e){}
+    audio.rec = null;
+    if(audio.stream){ try{ audio.stream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){} }
+    var st = await navigator.mediaDevices.getUserMedia({ audio:true });
+    audio.stream = st;
+    if(audio.ctx && audio.analyser){
+      try{ if(audio.srcNode) audio.srcNode.disconnect(); }catch(e){}
+      audio.srcNode = audio.ctx.createMediaStreamSource(st);
+      audio.srcNode.connect(audio.analyser);
+      if(audio.ctx.state === 'suspended') await audio.ctx.resume();
+    }
+    S.asrErr = '';
+    wakeFail = 0;
+  }catch(e){
+    S.asrErr = micErrText((e && e.name) || '');
+  }
+}
+
+/* 看门狗：卡住了就自己扶起来，别等人来重启 */
+setInterval(function(){
+  if(!S.running) return;
+  if(S.state === 'speak' && performance.now() > (S.talkUntil || 0) + 3000){
+    S.speaking = false;
+    setState('listen');
+  }
+  if(!audio.stream || !audio.stream.active){ rebuildAudio(); }
+  if(S.wakeCloudOn && Date.now() - (S.wakeBeat || 0) > 12000){
+    /* 相当于帮你点一次「先歇会」再点开始：整条链路重开 */
+    wakeBusy = false; wakeFail = 0;
+    rebuildAudio();
+    wakeTick();
+  }
+}, 1200);
+
+function startCloudWake(){
+  if(!S.settings.asrKey) return;
+  S.wakeCloudOn = true;
+  wakeTick();
+}
+function stopCloudWake(){
+  S.wakeCloudOn = false;
+  clearTimeout(wakeTimer);
+  wakeBusy = false;
+}
+
+function micErrText(n){
+  if(n === 'NotAllowedError' || n === 'PermissionDeniedError') return '麦克风权限被拒了（' + n + '）。要么是你点了不允许，要么是这个浏览器/内置网页把麦克风禁了。';
+  if(n === 'NotFoundError' || n === 'DevicesNotFoundError') return '这台设备没报出麦克风（' + n + '）。检查一下有没有插着耳机或外接设备。';
+  if(n === 'NotReadableError' || n === 'TrackStartError') return '麦克风被别的程序占着，抢不到（' + n + '）。先把录音、语音助手那些关掉。';
+  if(n === 'SecurityError') return '这个页面不是 https，浏览器不给麦克风（SecurityError）。用我给你的在线链接打开。';
+  return '麦克风打不开（' + (n || '未知错误') + '）。';
+}
+
+/* 麦克风自检：不动主流程，单独开一路，测 5 秒看能不能听见 */
+async function micCheck(){
+  var el = $('micStatus');
+  function say(t){ if(el) el.textContent = t; }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    say('这个环境不给开麦克风：不是 https，或者被内置浏览器关了。换系统浏览器打开这个链接再测。');
+    return;
+  }
+  say('正在申请麦克风……');
+  var st = null;
+  try{ st = await navigator.mediaDevices.getUserMedia({ audio:true }); }
+  catch(e){ say(micErrText((e && e.name) || '')); return; }
+  var ctx = null, an = null;
+  try{
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    await ctx.resume();
+    var src = ctx.createMediaStreamSource(st);
+    an = ctx.createAnalyser();
+    an.fftSize = 1024;
+    src.connect(an);
+  }catch(e){
+    say('麦克风开了，但音频引擎起不来（' + (e && e.name || '异常') + '）。');
+    try{ st.getTracks().forEach(function(t){ t.stop(); }); }catch(e2){}
+    return;
+  }
+  var buf = new Float32Array(an.fftSize);
+  var peak = -90, t0 = Date.now(), last = -90;
+  var label = '';
+  try{ label = (st.getAudioTracks()[0] || {}).label || ''; }catch(e){}
+  say('在听了，说句话给它听……');
+  while(Date.now() - t0 < 5000){
+    await sleep(140);
+    try{ an.getFloatTimeDomainData(buf); }catch(e){ break; }
+    var sum = 0;
+    for(var i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
+    var db = 20 * Math.log10(Math.sqrt(sum / buf.length) || 1e-6);
+    last = db;
+    if(db > peak) peak = db;
+    var bar = Math.round(clamp((db + 80) / 60, 0, 1) * 12);
+    say('在听 ' + new Array(bar + 1).join('■') + new Array(13 - bar).join('□') + '  ' + Math.round(db) + ' dB');
+  }
+  try{ st.getTracks().forEach(function(t){ t.stop(); }); }catch(e){}
+  try{ ctx.close(); }catch(e){}
+  if(peak > -62){
+    say('能收音。5 秒里最大 ' + Math.round(peak) + ' dB，现在 ' + Math.round(last) + ' dB' + (label ? '，设备是「' + label + '」' : '') + '。可以正经用了。');
+  }else if(peak > -82){
+    say('收音很弱。5 秒里最大只有 ' + Math.round(peak) + ' dB，像隔着一层东西。把手机挪近一点、别放抽屉里。');
+  }else{
+    say('基本没听见东西。5 秒里最大才 ' + Math.round(peak) + ' dB——麦克风可能被系统关着，或者被别的 App 占着。');
+  }
+}
+
+function stopRun(){
+  calib.on = false;
+  dropWake();
+  stopCloudWake();
+  S.running = false;
+  S.dialogMode = false;
+  S.awaitQ = 0;
+  clearTimeout(dialogTimer);
+  stopWake();
+  try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
+  try{ if(audio.stream) audio.stream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){}
+  try{ if(audio.ctx) audio.ctx.close(); }catch(e){}
+  audio.ctx = null; audio.analyser = null; audio.stream = null;
+  S.level = 0; S.score = 0;
+  setState('idle');
+  $('subtitle').textContent = '我先歇着。';
+  $('btnStart').textContent = '开始守客厅';
+  $('btnStart').classList.remove('is-on');
+  renderWakeStatus();
+}
+
+function resetFeat(){
+  feat.dbMax = -90; feat.frames = 0; feat.active = 0; feat.switches = 0; feat.silences = 0;
+  feat.quietMs = 0; feat.flagged = false; feat.lastT = performance.now();
+}
+
+/* ================= 声音特征 ================= */
+function pitchOf(buf, srate){
+  var step = Math.max(1, Math.round(srate / 12000));
+  var n = Math.floor(buf.length / step);
+  if(n < 200) return 0;
+  var s = new Float32Array(n), rms = 0, i;
+  for(i=0;i<n;i++){ s[i] = buf[i*step]; rms += s[i]*s[i]; }
+  rms = Math.sqrt(rms/n);
+  if(rms < 0.006) return 0;
+  var best = 0, bestLag = 0;
+  for(var lag=34; lag<=180; lag++){
+    var c = 0;
+    for(i=0;i<n-lag;i++) c += s[i]*s[i+lag];
+    c /= (n-lag);
+    if(c > best){ best = c; bestLag = lag; }
+  }
+  if(best < rms*rms*0.45) return 0;
+  return (12000 / bestLag);
+}
+
+function onPitch(f){
+  if(!f || f < 60 || f > 400) return;
+  if(spk.n === 0){ spk.c1 = f; spk.c2 = f; spk.n = 1; return; }
+  if(Math.abs(spk.c1 - spk.c2) < 14){
+    if(f > spk.c1 + 9) spk.c2 = f;
+    else if(f < spk.c1 - 9){ spk.c2 = spk.c1; spk.c1 = f; }
+    else spk.c1 += (f - spk.c1) * 0.2;
+    spk.n = 2; return;
+  }
+  var who = Math.abs(f - spk.c1) < Math.abs(f - spk.c2) ? 1 : 2;
+  if(who === 1) spk.c1 += (f - spk.c1) * 0.18;
+  else spk.c2 += (f - spk.c2) * 0.18;
+  if(spk.last && who !== spk.last) feat.switches++;
+  spk.last = who;
+}
+
+/* ================= 主循环 ================= */
+var overSince = 0;
+var lastAgg = 0, lastPitch = 0, lastPaint = 0;
+
+function loop(now){
+  requestAnimationFrame(loop);
+  if(!audio.analyser) return;
+  audio.analyser.getFloatTimeDomainData(audio.tbuf);
+  var b = audio.tbuf, sum = 0, peak = 0, i, v;
+  for(i=0;i<b.length;i++){ v = b[i]; sum += v*v; if(Math.abs(v) > peak) peak = Math.abs(v); }
+  var rms = Math.sqrt(sum / b.length);
+  var db = 20 * Math.log10(rms + 1e-7);
+  if(!isFinite(db)) db = -100;
+
+  var target = clamp((db + 62) / 40, 0, 1);
+  S.level = S.level * 0.72 + target * 0.28;
+  if(calib.on && isFinite(db)) calib.ds.push(db);
+
+  var dt = Math.max(0, now - (feat.lastT || now));
+  feat.lastT = now;
+  if(db > feat.dbMax) feat.dbMax = db;
+  if(S.running) feat.frames++;
+
+  var floorDb = S.baseline + 5;
+  if(db > floorDb){
+    if(S.running) feat.active++;
+    feat.quietMs = 0; feat.flagged = false;
+  }else{
+    feat.quietMs += dt;
+    if(feat.quietMs >= 320 && !feat.flagged){ feat.silences++; feat.flagged = true; }
+    if(db < S.baseline + 6){ S.baseline = S.baseline * 0.985 + db * 0.015; S.baseline = clamp(S.baseline, -72, -34); }
+  }
+
+  if(now - lastPitch > 100){ lastPitch = now; onPitch(pitchOf(b, audio.ctx ? audio.ctx.sampleRate : 48000)); }
+
+  if(now - lastAgg > 1000){ lastAgg = now; aggregate(now); }
+
+  if(now - lastPaint > 240){ lastPaint = now; paintMeters(now); }
+}
+
+function aggregate(now){
+  var loud = clamp((feat.dbMax - S.baseline - 8) / 18, 0, 1);
+  var density = clamp((feat.active / Math.max(1, feat.frames) - 0.30) / 0.70, 0, 1);
+  var turn = clamp(feat.switches / 4, 0, 1);
+  var cont = 1 - clamp(feat.silences / 3, 0, 1);
+  var sc = 0.40*loud + 0.25*density + 0.19*turn + 0.16*cont;
+  if(density < 0.22) sc *= density / 0.22;
+
+  S.metrics.loud = loud; S.metrics.turn = turn; S.metrics.cont = cont;
+  S.score = S.score * 0.72 + sc * 0.28;
+
+  var th = SENS[S.settings.sens] || SENS.std;
+  var busy = ['suspect','think','wait','speak','cool','snooze','dialog','calib'].indexOf(S.state) >= 0;
+
+  if(S.running && !busy && S.score > th){
+    if(!overSince) overSince = now;
+    else if(now - overSince > 6000 && Date.now() > S.cooldownUntil && Date.now() > S.snoozeUntil) engage();
+  }else{
+    overSince = 0;
+  }
+
+  if(S.state === 'cool' && Date.now() > S.cooldownUntil) setState('listen');
+  if(S.state === 'snooze' && Date.now() > S.snoozeUntil) setState(S.running ? 'listen' : 'idle');
+
+  resetFeat();
+}
+
+function paintMeters(){
+  var th = SENS[S.settings.sens] || SENS.std;
+  if(calib.on){
+    var left = Math.ceil((CALIB_MS - (Date.now() - calib.t0)) / 1000);
+    if(left <= 0){ endCalib(); }
+    else{
+      $('subtitle').textContent = '先别急着说话，我在熟悉你家安静时候的声音 · ' + left + ' 秒';
+    }
+  }
+  $('scoreNum').textContent = S.score.toFixed(2);
+  $('scoreFill').style.width = clamp(S.score,0,1) * 100 + '%';
+  $('scoreMark').style.left = th * 100 + '%';
+  $('gLoud').style.width = clamp(S.metrics.loud,0,1) * 100 + '%';
+  $('gTurn').style.width = clamp(S.metrics.turn,0,1) * 100 + '%';
+  $('gCont').style.width = clamp(S.metrics.cont,0,1) * 100 + '%';
+  var mins = S.running ? (Date.now() - S.startedAt) / 60000 : 0;
+  $('gTime').style.width = clamp(mins / 30, 0, 1) * 100 + '%';
+
+  var mode = '客厅 · ' + (STATE_TEXT[S.state] || '待机');
+  if(S.state === 'cool' && S.cooldownUntil > Date.now()){
+    mode += ' · ' + Math.ceil((S.cooldownUntil - Date.now())/60000) + ' 分钟后再管';
+  }
+  if(S.state === 'snooze' && S.snoozeUntil > Date.now()){
+    mode += ' · ' + Math.ceil((S.snoozeUntil - Date.now())/60000) + ' 分钟后醒';
+  }
+  $('modeLine').textContent = mode;
+}
+
+/* ================= 判定：云端 / 本地 ================= */
+function joinUrl(base, path){
+  base = (base || '').trim().replace(/\/+$/,'');
+  return base + '/' + path;
+}
+
+async function fetchWithTimeout(url, opts, ms){
+  var ctrl = window.AbortController ? new AbortController() : null;
+  var timer = null;
+  if(ctrl){ opts.signal = ctrl.signal; timer = setTimeout(function(){ ctrl.abort(); }, ms); }
+  try{ return await fetch(url, opts); }
+  finally{ if(timer) clearTimeout(timer); }
+}
+
+function normBase(u){
+  u = (u || '').trim().replace(/[^\x21-\x7E]/g, '');
+  u = u.replace(/\/+$/,'');
+  u = u.replace(/\/chat\/completions$/i, '').replace(/\/audio\/transcriptions$/i, '').replace(/\/models$/i, '');
+  return u.replace(/\/+$/,'');
+}
+function normKey(k){
+  return (k || '').trim().replace(/^\s*Bearer\s+/i, '').replace(/[^\x21-\x7E]/g, '').trim();
+}
+function cleanInputs(){
+  var rawKey = $('inpKey').value, rawBase = $('inpBase').value;
+  var keyBad = /[^\x21-\x7E\s]/.test(rawKey);
+  var baseBad = /[^\x21-\x7E\s]/.test(rawBase);
+  S.settings.baseUrl = normBase(rawBase);
+  S.settings.apiKey = normKey(rawKey);
+  $('inpBase').value = S.settings.baseUrl;
+  $('inpKey').value = S.settings.apiKey;
+  var rawAsrKey = $('inpAsrKey').value, rawAsrBase = $('inpAsrBase').value;
+  var asrBad = /[^\x21-\x7E\s]/.test(rawAsrKey) || /[^\x21-\x7E\s]/.test(rawAsrBase);
+  S.settings.asrBase = normBase(rawAsrBase);
+  S.settings.asrKey = normKey(rawAsrKey);
+  $('inpAsrBase').value = S.settings.asrBase;
+  $('inpAsrKey').value = S.settings.asrKey;
+  if(keyBad || baseBad || asrBad) toast('里面有中文或全角字符，浏览器不接受，我帮你清掉了。');
+  return keyBad || baseBad || asrBad;
+}
+function explainErr(err){
+  var m = (err && err.message) || '未知错误';
+  if(/ISO-8859|non ISO|code point/i.test(m)) return '密钥里还有中文或全角字符，浏览器不接受 —— 重新粘一次纯英文的密钥。';
+  if(/HTTP 401/.test(m)) return '401 密钥不对 —— 对话用的是「密钥」那栏的百炼 key，跟「转写密钥」是两家，别填串了。';
+  if(/HTTP 403/.test(m)) return '403 这个密钥没权限调这个模型，换个模型或开通权限。';
+  if(/HTTP 404/.test(m)) return '404 地址不对 —— 一般要填到 /v1 结尾，别把 chat/completions 也贴进去。';
+  if(/HTTP 400/.test(m)) return '400 参数被拒 —— 多半是模型名写错了。';
+  if(/HTTP 429/.test(m)) return '429 额度用完或请求太快，等一会儿。';
+  if(/Failed to fetch|NetworkError|Load failed|Network request failed|aborted|Timeout/i.test(m)) return '请求没发出去，多半是这个接口不允许网页直接调（跨域），换个支持浏览器直连的接口。';
+  return m;
+}
+
+async function checkConnection(){
+  var r = null;
+  try{
+    r = await fetchWithTimeout(joinUrl(S.settings.baseUrl, 'models'), {
+      headers:{ 'Authorization':'Bearer ' + S.settings.apiKey }
+    }, 12000);
+  }catch(e){ toast('连不上：' + explainErr(e)); return; }
+  if(!r.ok){
+    var t = '';
+    try{ t = await r.text(); }catch(e){}
+    var msg = 'HTTP ' + r.status;
+    if(t) msg += ' · ' + t.replace(/\s+/g, ' ').slice(0, 120);
+    toast('连不上：' + explainErr(new Error(msg)));
+    return;
+  }
+  var n = 0;
+  try{ var j = await r.json(); n = (j.data || j.models || []).length; }catch(e){}
+  toast(n ? ('连接正常，这个密钥能看到 ' + n + ' 个模型。') : '连接正常。');
+}
+
+async function transcribe(blob){
+  var ext = blob.type.indexOf('mp4') >= 0 ? 'm4a' : (blob.type.indexOf('ogg') >= 0 ? 'ogg' : 'webm');
+  var fd = new FormData();
+  fd.append('file', blob, 'seg.' + ext);
+  fd.append('model', S.settings.asrModel || 'FunAudioLLM/SenseVoiceSmall');
+  fd.append('language', 'zh');
+  fd.append('response_format', 'json');
+  /* 转写可以走另一家：地址和密钥单独填，填了就优先用它 */
+  var tBase = (S.settings.asrKey ? S.settings.asrBase : S.settings.baseUrl);
+  var tKey = (S.settings.asrKey || S.settings.apiKey);
+  var r = await fetchWithTimeout(joinUrl(tBase, 'audio/transcriptions'), {
+    method:'POST', headers:{ 'Authorization':'Bearer ' + tKey }, body: fd
+  }, 15000);
+  if(!r.ok){
+    var e = '';
+    try{ e = await r.text(); }catch(e2){}
+    throw new Error('ASR ' + r.status + (e ? ' · ' + e.replace(/\s+/g,' ').slice(0,120) : ''));
+  }
+  var j = await r.json();
+  return String(j.text || '').trim().slice(0, 600);
+}
+
+var SYSTEM_PROMPT = [
+  '你是「阿和」，一个住在人家客厅茶几上的小方块机器人。你唯一的工作：在家里人吵起来的时候，用一句话把他们从火头上拽下来，然后立刻退场。',
+  '',
+  '你必须守住的分寸（违反任何一条就算不合格）：',
+  '1. 绝不站队，绝不说谁对谁错，绝不讲大道理，绝不说「你们要互相理解」。',
+  '2. 以下这些话一句都不能说：你们都冷静一下、别吵了、有话好好说、气大伤身、退一步海阔天空。',
+  '3. 只说一句话，中文口语，不超过 40 个字。像人随口说的，不像 AI 说的。',
+  '4. 要让两个人都觉得自己的情绪被承认了，同时把矛头从「对方」挪到「这件事」或者「此刻都很累」上。',
+  '5. 必须给一个三十秒内就能做到的具体小动作或台阶：喝口水、坐下来、递个东西、换个地方、笑一下、各说三十秒。',
+  '6. 要有幽默，但笑话必须落在自己身上（我的小身板、我只有一块屏幕、我容易落灰），绝不许拿他们俩开玩笑、不许阴阳怪气、不许油、不许卖萌、不许用网络热梗。',
+  '7. 自称「我」。称呼只用「你俩」「二位」「咱家」，不许直呼名字，不许用「叔叔阿姨」。',
+  '8. 如果录音里根本没在吵架，只是说话大声、聊天、打电话、电视声，就把 quarrel 设为 false。',
+  '',
+  '只输出一段 JSON，不要任何解释、不要代码块标记：',
+  '{"quarrel":true,"intensity":0.0,"parties":"父母|亲子|伴侣|多人|不明","topic":"八个字以内的事由","line":"那句话","why":"十五个字以内，说明你为什么不站队"}'
+].join('\n');
+
+function buildUser(transcript, featLine){
+  var parts = [];
+  parts.push('场景：中国家庭客厅，家里有父母，可能也有孩子，人数不定。');
+  parts.push('声音特征：' + featLine);
+  if(transcript) parts.push('最近几秒听到的原话（可能有转写错误，按语气理解，不要揪字眼）：\n' + transcript);
+  else parts.push('原话没转写出来，你只听得到声音（音量、谁在抢话、有没有停顿），听不到字。所以：不要猜具体事由，topic 留空；line 必须完全不依赖具体内容，但仍要像人随口说的话，用「你俩」「二位」这样的称呼，并给出一个三十秒内能做到的小动作。声音特征已经很像在吵，就按在吵处理。');
+  parts.push('现在决定：要不要开口、什么时候开口、说什么。');
+  return parts.join('\n');
+}
+
+function parseJudge(text){
+  if(!text) return null;
+  var s = String(text).replace(/```/g, '');
+  var a = s.indexOf('{'), b = s.lastIndexOf('}');
+  if(a >= 0 && b > a){
+    try{ return JSON.parse(s.slice(a, b+1)); }catch(e){}
+  }
+  return null;
+}
+
+function normJudge(o){
+  if(!o || typeof o !== 'object') return null;
+  if(o.quarrel === false || o.quarrel === 'false') return { quarrel:false };
+  var line = String(o.line || '').replace(/^[\s"'“”「」]+|[\s"'“”「」]+$/g, '');
+  if(!line) return null;
+  if(line.length > 56) line = line.slice(0, 54) + '…';
+  return {
+    quarrel: true,
+    intensity: clamp(parseFloat(o.intensity) || 0.7, 0, 1),
+    parties: String(o.parties || '不明').slice(0, 6),
+    topic: String(o.topic || '').slice(0, 12),
+    line: line,
+    why: String(o.why || '').slice(0, 40)
+  };
+}
+
+async function judgeCloud(blob, transcriptOverride){
+  if(!S.settings.apiKey || !S.settings.baseUrl) return null;
+  var transcript = transcriptOverride || '';
+  if(!transcript && blob && (S.settings.asrKey || S.settings.asrModel)){
+    try{ transcript = await transcribe(blob); }catch(e){ transcript = ''; }
+  }
+  var featLine = '音量比平时高约 ' + Math.round(clamp((feat.dbMax - S.baseline), 0, 40)) + 'dB；这一秒里抢话 ' +
+            Math.round(feat.switches) + ' 次；' + (feat.silences <= 1 ? '几乎没有停顿' : '有 ' + feat.silences + ' 次停顿') +
+            '；持续火药味估值 ' + S.score.toFixed(2);
+  var payload = {
+    model: S.settings.chatModel,
+    temperature: 0.65,
+    max_tokens: 320,
+    messages: [
+      { role:'system', content: SYSTEM_PROMPT },
+      { role:'user', content: buildUser(transcript, featLine) }
+    ]
+  };
+  var r = await fetchWithTimeout(joinUrl(S.settings.baseUrl, 'chat/completions'), {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + S.settings.apiKey },
+    body: JSON.stringify(payload)
+  }, 25000);
+  if(!r.ok){
+    var errBody = '';
+    try{ errBody = await r.text(); }catch(e){}
+    throw new Error('HTTP ' + r.status + (errBody ? ' · ' + errBody.replace(/\s+/g, ' ').slice(0, 150) : ''));
+  }
+  var j = await r.json();
+  var txt = j && j.choices && j.choices[0] && j.choices[0].message ? j.choices[0].message.content : '';
+  return normJudge(parseJudge(txt));
+}
+
+var LOCAL_LINES = {
+  low: [
+    '打扰一下。你俩这音量，楼下可能以为咱家在装修。',
+    '我插一句：你现在这句，是想解决问题，还是想赢？我一小盒子都听出胜负欲了。',
+    '二位，我这儿有两个位子，一人三十秒，我计时。超时那个负责洗碗。',
+    '我觉着吧，这事儿值得聊，但不值得现在聊。你俩渴不渴，我这儿没水，但我可以提醒你们去倒。'
+  ],
+  mid: [
+    '打断一下。你俩说的其实是同一件事——都觉得自己没被当回事。这个我懂，我天天被当成摆件。',
+    '先别接下一句。我听下来，一个要「你听见我」，一个要「你别否定我」。东西是同一份，包装不一样。',
+    '我说句公道话：这次谁先闭嘴谁赢。真的，我发奖，奖品是今晚不用洗碗。',
+    '停一下。你俩都在讲道理，可讲道理的人这会儿都不太讲得动。',
+    '我这小铁盒子的经验：吵到第十句，说的就不是事儿了，是气。咱先跳过第九句。'
+  ],
+  high: [
+    '到我这停一下。这事儿十分钟后大概就不重要了，可这个气是真难受。先各喝口水，我陪你们站着。',
+    '你俩现在谁都没在听对方，都在准备下一句。歇三十秒，我先替你们听着——我不记仇，我只有一块屏幕，存不下。',
+    '行了二位。我一个小铁盒子都听出你俩嗓子哑了。坐下，吵也得坐着吵，站着吵容易累，累了更吵。',
+    '我把话放这儿：现在这句最狠的要是出去了，明天你俩都得后悔。先咽回去，咽回去我请客——我没钱，我只有嘴。'
+  ]
+};
+function localJudge(){
+  var i = S.score;
+  var pool = i > 0.82 ? LOCAL_LINES.high : (i > 0.62 ? LOCAL_LINES.mid : LOCAL_LINES.low);
+  var line = pool[Math.floor(Math.random() * pool.length)];
+  return {
+    quarrel: true,
+    intensity: clamp(i, 0, 1),
+    parties: '不明',
+    topic: '',
+    line: line,
+    why: '内置经验：先承认两个人的火，再把矛头挪开'
+  };
+}
+
+/* ================= 介入流程 ================= */
+async function capture(ms){
+  return new Promise(function(resolve){
+    if(!audio.stream || !window.MediaRecorder){ resolve(null); return; }
+    var chunks = [], rec, done = false, guard = 0;
+    function finish(v){
+      if(done) return; done = true;
+      clearTimeout(guard);
+      try{ if(rec && rec.state !== 'inactive') rec.stop(); }catch(e){}
+      resolve(v);
+    }
+    try{
+      rec = audio.mime ? new MediaRecorder(audio.stream, { mimeType: audio.mime }) : new MediaRecorder(audio.stream);
+    }catch(e){ resolve(null); return; }
+    audio.rec = rec;
+    rec.ondataavailable = function(e){ if(e.data && e.data.size) chunks.push(e.data); };
+    rec.onstop = function(){
+      finish(chunks.length ? new Blob(chunks, { type: rec.mimeType || 'audio/webm' }) : null);
+    };
+    rec.onerror = function(){ finish(null); };
+    try{ rec.start(); }catch(e){ resolve(null); return; }
+    setTimeout(function(){
+      try{ rec.stop(); }catch(e){ finish(null); }
+    }, ms);
+    /* 录音器卡住不回调时，到点自己收手，绝不空等 */
+    guard = setTimeout(function(){ finish(null); }, ms + 1200);
+  });
+}
+
+async function waitForGap(){
+  var t0 = performance.now(), quietSince = 0, calmSince = 0;
+  while(performance.now() - t0 < 4600){
+    await sleep(55);
+    if(S.level < 0.17){
+      if(!quietSince) quietSince = performance.now();
+      if(!calmSince) calmSince = performance.now();
+      if(performance.now() - quietSince > 640) return 'gap';
+      if(performance.now() - calmSince > 2400 && S.score < 0.42) return 'calm';
+    }else{
+      quietSince = 0; calmSince = 0;
+    }
+  }
+  return 'force';
+}
+
+async function engage(){
+  if(!S.running) return;
+  if(S.dialogMode) return;
+  if(Date.now() < S.cooldownUntil || Date.now() < S.snoozeUntil) return;
+  setState('suspect');
+  var blob = await capture(5000);
+  if(!S.running || S.dialogMode) return;
+  setState('think');
+  var heardText = (S.settings.asrKey || S.settings.asrModel) ? '' : recentHeard();
+  var j = null;
+  if(S.settings.apiKey){
+    try{ j = await judgeCloud(blob, heardText); }
+    catch(e){ j = null; }
+  }
+  if(!S.running) return;
+  if(!j) j = localJudge();
+  if(j.quarrel === false){
+    setState('listen');
+    toast('这次听着不像吵架，我继续听着。');
+    return;
+  }
+  setState('wait');
+  var moment = await waitForGap();
+  if(moment === 'calm' || !S.running){ setState('listen'); return; }
+  chime();
+  setState('speak');
+  speak(j.line);
+  addLog(j);
+  S.cooldownUntil = Date.now() + 6 * 60 * 1000;
+  var est = j.line.length * 190 + 1400;
+  setTimeout(function(){ if(S.state === 'speak') setState('cool'); }, est);
+}
+
+function addLog(j){
+  var now = new Date();
+  var t = ('0'+now.getHours()).slice(-2) + ':' + ('0'+now.getMinutes()).slice(-2);
+  S.log.unshift({ t:t, parties:j.parties, topic:j.topic, line:j.line, why:j.why, online:!!S.settings.apiKey });
+  S.log = S.log.slice(0, 20);
+  saveLog();
+  renderLog();
+}
+
+function renderLog(){
+  var list = $('logList'), empty = $('logEmpty');
+  list.innerHTML = '';
+  if(!S.log.length){ empty.hidden = false; return; }
+  empty.hidden = true;
+  S.log.forEach(function(e){
+    var li = document.createElement('li');
+    var meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.textContent = e.t + ' · ' + (e.parties || '不明') + (e.topic ? ' · ' + e.topic : '') + (e.online ? '' : ' · 内置话术');
+    var said = document.createElement('div');
+    said.className = 'said';
+    said.textContent = e.line;
+    li.appendChild(meta); li.appendChild(said);
+    if(e.why){
+      var why = document.createElement('div');
+      why.className = 'why';
+      why.textContent = e.why;
+      li.appendChild(why);
+    }
+    list.appendChild(li);
+  });
+}
+
+/* ================= 画脸 ================= */
+var cv = $('face'), c2 = cv.getContext('2d');
+var CW = 0, CH = 0, DPR = 1;
+function fitCanvas(){
+  var r = cv.getBoundingClientRect();
+  if(!r.width || !r.height) return;
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  CW = r.width; CH = r.height;
+  cv.width = Math.round(CW * DPR); cv.height = Math.round(CH * DPR);
+  c2.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+if(window.ResizeObserver){ new ResizeObserver(fitCanvas).observe(cv.parentNode); }
+window.addEventListener('resize', fitCanvas);
+window.addEventListener('orientationchange', function(){ setTimeout(fitCanvas, 260); });
+
+function rr(ctx, x, y, w, h, r){
+  if(ctx.roundRect){ ctx.beginPath(); ctx.roundRect(x, y, w, h, r); return; }
+  r = Math.min(r, w/2, h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+var blinkAt = 0, nextBlink = 0;
+function blinkScale(now){
+  if(nextBlink === 0) nextBlink = now + 2200 + Math.random()*2800;
+  if(now > nextBlink){ blinkAt = now; nextBlink = now + 2600 + Math.random()*4200; }
+  var d = now - blinkAt;
+  if(d >= 0 && d < 170){
+    var p = d / 170;
+    return Math.abs(1 - 2*Math.min(1, p));
+  }
+  return 1;
+}
+
+function drawFace(now){
+  requestAnimationFrame(drawFace);
+  if(!CW || !CH) return;
+  c2.clearRect(0, 0, CW, CH);
+
+  var st = S.state;
+  var cx = CW/2, cy = CH*0.53;
+  var R = Math.min(CW*0.44, CH*0.50);
+  var lvl = S.level;
+  var hot = (st === 'suspect' || st === 'wait') ? 1 : 0;
+  var thinking = st === 'think' ? 1 : 0;
+  var talking = (S.speaking || now < S.talkUntil) ? 1 : 0;
+  var asleep = st === 'snooze' ? 1 : 0;
+
+  /* 环境光晕 */
+  var breathe = reduced ? 0.5 : (0.5 + 0.5 * Math.sin(now/2700));
+  var amt = 0.11 + lvl*0.18 + breathe*0.05 + talking*0.13 + hot*0.11 - asleep*0.06;
+  var col = hot ? '214,89,63' : (asleep ? '150,131,112' : '245,168,90');
+  var g = c2.createRadialGradient(cx, cy, R*0.18, cx, cy, R*2.05);
+  g.addColorStop(0, 'rgba('+col+','+ Math.min(0.30, amt*1.5).toFixed(3) +')');
+  g.addColorStop(0.58, 'rgba('+col+','+ Math.max(0, amt*0.3).toFixed(3) +')');
+  g.addColorStop(1, 'rgba('+col+',0)');
+  c2.fillStyle = g;
+  c2.beginPath(); c2.arc(cx, cy, R*2.05, 0, Math.PI*2); c2.fill();
+
+  /* 说话声波 */
+  if(talking){
+    for(var k=0;k<2;k++){
+      var ph = ((now/950) + k*0.5) % 1;
+      c2.beginPath();
+      c2.arc(cx, cy, R*1.1 + ph*R*0.85, 0, Math.PI*2);
+      c2.strokeStyle = 'rgba(255,214,164,' + (0.20*(1-ph)).toFixed(3) + ')';
+      c2.lineWidth = 1.3;
+      c2.stroke();
+    }
+  }
+
+  /* 头 */
+  var bob = reduced ? 0 : Math.sin(now/1950) * 2.4;
+  var hy = cy + bob;
+  var hw = Math.min(CW*0.60, R*1.60), hh = hw*0.86;
+  var hg = c2.createLinearGradient(0, hy-hh/2, 0, hy+hh/2);
+  hg.addColorStop(0, '#F9EADA');
+  hg.addColorStop(0.55, '#EFDABB');
+  hg.addColorStop(1, '#D8BC99');
+  rr(c2, cx-hw/2, hy-hh/2, hw, hh, hw*0.30);
+  c2.fillStyle = hg;
+  c2.fill();
+  if(hot){
+    c2.fillStyle = 'rgba(190,84,58,' + (0.05 + lvl*0.06).toFixed(3) + ')';
+    c2.fill();
+  }
+  c2.strokeStyle = 'rgba(255,248,238,.55)';
+  c2.lineWidth = 1.1;
+  c2.stroke();
+
+  /* 眼睛 */
+  var eyeY = hy - hh*0.06;
+  var dx = hw*0.185;
+  var ew = hw*0.062, eh = ew*2.55;
+  var open = blinkScale(now);
+  if(reduced) open = 1;
+  var squint = (st === 'suspect') ? 0.42 : (st === 'cool' ? 0.72 : (st === 'think' ? 0.82 : 1));
+  eh = eh * open * squint * (1 + lvl*0.12);
+  var eyeX = cx;
+  if(st === 'think'){ eyeX = cx + hw*0.05; eyeY = eyeY - hh*0.02; }
+  c2.fillStyle = hot ? '#5E2A1B' : '#3A2A20';
+
+  if(asleep){
+    [-1,1].forEach(function(sd){
+      c2.beginPath();
+      c2.arc(cx + sd*dx, eyeY - 2, ew*0.95, 0.12*Math.PI, 0.88*Math.PI, false);
+      c2.strokeStyle = '#4A3628'; c2.lineWidth = 2.2; c2.stroke();
+    });
+  }else{
+    [-1,1].forEach(function(sd){
+      rr(c2, eyeX + sd*dx - ew/2, eyeY - eh/2, ew, Math.max(2.4, eh), ew/2);
+      c2.fill();
+    });
+  }
+
+  /* 嘴 */
+  var my = hy + hh*0.215;
+  if(talking){
+    var base = hw*0.115, bars = 9, step = (base*2)/(bars-1);
+    var amp = 0.35 + 0.65 * Math.abs(Math.sin(now/160)) * Math.abs(Math.sin(now/430 + 1));
+    for(var i=0;i<bars;i++){
+      var bh = 2.2 + amp * (6.5 + 7.5 * Math.abs(Math.sin(now/210 + i*0.85)));
+      var bx = cx - base + i*step;
+      rr(c2, bx - 1.35, my - bh/2, 2.7, bh, 1.35);
+      c2.fillStyle = 'rgba(74,54,40,.9)';
+      c2.fill();
+    }
+  }else if(st === 'suspect'){
+    c2.beginPath();
+    c2.moveTo(cx - hw*0.075, my);
+    c2.lineTo(cx + hw*0.075, my);
+    c2.strokeStyle = '#4A3628'; c2.lineWidth = 2.2; c2.stroke();
+  }else if(asleep){
+    c2.beginPath();
+    c2.arc(cx, my - 3, hw*0.026, 0, Math.PI*2);
+    c2.fillStyle = '#4A3628'; c2.fill();
+  }else{
+    c2.beginPath();
+    c2.moveTo(cx - hw*0.085, my - 1);
+    c2.quadraticCurveTo(cx, my + hw*0.055, cx + hw*0.085, my - 1);
+    c2.strokeStyle = '#4A3628'; c2.lineWidth = 2.1; c2.lineCap = 'round';
+    c2.stroke();
+  }
+
+  /* 指示灯 */
+  var ledA = 0.35 + 0.45 * (reduced ? 0.5 : (0.5 + 0.5*Math.sin(now/1400)));
+  c2.beginPath();
+  c2.arc(cx, hy + hh/2 + 13, 2.4, 0, Math.PI*2);
+  c2.fillStyle = 'rgba(245,168,90,' + ledA.toFixed(3) + ')';
+  c2.fill();
+
+  /* 思考小点 */
+  if(thinking){
+    for(var d=0; d<3; d++){
+      var on = (Math.floor(now/380) % 3) >= d;
+      c2.beginPath();
+      c2.arc(cx + hw*0.30 + d*8, hy - hh*0.52, 2.1, 0, Math.PI*2);
+      c2.fillStyle = 'rgba(245,168,90,' + (on ? 0.75 : 0.16) + ')';
+      c2.fill();
+    }
+  }
+}
+
+/* ================= 交互 ================= */
+function openSheet(on){
+  $('sheet').classList.toggle('show', on);
+  if(on){
+    $('inpBase').value = S.settings.baseUrl;
+    $('inpKey').value = S.settings.apiKey;
+    $('inpAsr').value = S.settings.asrModel;
+    $('inpAsrBase').value = S.settings.asrBase;
+    $('inpAsrKey').value = S.settings.asrKey;
+    $('inpChat').value = S.settings.chatModel;
+    document.querySelectorAll('#segSens button').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-sens') === S.settings.sens);
+    });
+    $('swVoice').setAttribute('aria-checked', String(!!S.settings.voice));
+    $('swWake').setAttribute('aria-checked', String(!!S.settings.wake));
+    renderVoiceStatus();
+    renderWakeStatus();
+  }
+}
+
+$('btnStart').addEventListener('click', function(){
+  unlockVoice();
+  if(S.running) stopRun(); else startRun();
+});
+$('btnAllow').addEventListener('click', function(){
+  $('intro').classList.remove('show');
+  unlockVoice();
+  startRun();
+});
+$('btnIntroSkip').addEventListener('click', function(){
+  $('intro').classList.remove('show');
+  toast('不开麦克风也能看：点「听一句」可以听我说话。');
+});
+$('btnSettings').addEventListener('click', function(){ openSheet(true); });
+$('btnCloseSheet').addEventListener('click', function(){ openSheet(false); });
+$('sheet').addEventListener('click', function(e){ if(e.target === $('sheet')) openSheet(false); });
+
+$('btnMicCheck').addEventListener('click', function(){ micCheck(); });
+$('btnAsrProbe').addEventListener('click', function(){ probeTranscribe(); });
+
+$('btnMute').addEventListener('click', function(){
+  S.settings.mute = !S.settings.mute;
+  this.setAttribute('aria-pressed', String(S.settings.mute));
+  $('muteWave').style.opacity = S.settings.mute ? '0.25' : '1';
+  $('muteWave2').style.opacity = S.settings.mute ? '0.25' : '1';
+  if(S.settings.mute && window.speechSynthesis){ try{ speechSynthesis.cancel(); }catch(e){} }
+  saveSettings();
+  toast(S.settings.mute ? '我闭嘴，只出字幕。' : '我可以说话了。');
+});
+
+$('btnSnooze').addEventListener('click', function(){
+  S.snoozeUntil = Date.now() + 30*60*1000;
+  if(window.speechSynthesis){ try{ speechSynthesis.cancel(); }catch(e){} }
+  setState('snooze');
+  $('subtitle').textContent = '好，我闭嘴。三十分钟后再说。';
+  toast('三十分钟内我不插嘴。');
+});
+
+$('btnPreview').addEventListener('click', function(){
+  unlockVoice();
+  var pool = S.score > 0.55 ? LOCAL_LINES.mid : LOCAL_LINES.low;
+  var line = pool[Math.floor(Math.random()*pool.length)];
+  chime();
+  setState('speak');
+  speak(line, { after:function(){ if(S.state==='speak') setState(S.running?'listen':'idle'); } });
+  setTimeout(function(){ if(S.state==='speak' && !S.running) setState('idle'); }, 4000);
+});
+
+$('btnClearLog').addEventListener('click', function(){
+  S.log = []; saveLog(); renderLog(); toast('记录清空了。');
+});
+
+$('swVoice').addEventListener('click', function(){
+  S.settings.voice = !S.settings.voice;
+  this.setAttribute('aria-checked', String(!!S.settings.voice));
+  saveSettings();
+});
+
+$('swWake').addEventListener('click', function(){
+  S.settings.wake = !S.settings.wake;
+  this.setAttribute('aria-checked', String(!!S.settings.wake));
+  saveSettings();
+  if(S.settings.wake){
+    if(S.running && !S.wakeOk) startWake();
+    if(S.running) startCloudWake();
+  }else{
+    stopWake();
+    stopCloudWake();
+  }
+  renderWakeStatus();
+});
+
+cv.addEventListener('click', function(){
+  unlockVoice();
+  chime();
+  try{ $('askInput').focus(); }catch(e){}
+  if(hasSR() && S.running){ enterDialog(''); }
+  else if(!hasSR()){ toast('这台设备没有语音识别，在下面输入框打字问我。'); }
+});
+
+$('askForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var q = $('askInput').value.trim();
+  if(!q){ $('askInput').focus(); return; }
+  $('askInput').value = '';
+  try{ $('askInput').blur(); }catch(e){}
+  askNow(q);
+});
+
+document.querySelectorAll('#segSens button').forEach(function(b){
+  b.addEventListener('click', function(){
+    S.settings.sens = b.getAttribute('data-sens');
+    document.querySelectorAll('#segSens button').forEach(function(x){ x.classList.toggle('on', x === b); });
+  });
+});
+
+document.querySelectorAll('.preset').forEach(function(b){
+  b.addEventListener('click', function(){
+    var key = b.getAttribute('data-set');
+    if(key === 'clear'){
+      S.settings.apiKey = '';
+      $('inpKey').value = '';
+      toast('密钥已清空，我现在只靠内置经验。');
+      return;
+    }
+    var p = PRESETS[key];
+    if(!p) return;
+    $('inpBase').value = p.baseUrl;
+    $('inpAsr').value = p.asrModel;
+    $('inpChat').value = p.chatModel;
+    toast('已填好接口地址，把你的密钥粘进去就行。');
+  });
+});
+
+$('btnSave').addEventListener('click', function(){
+  var cleaned = cleanInputs();
+  S.settings.asrModel = $('inpAsr').value.trim();
+  S.settings.chatModel = $('inpChat').value.trim();
+  saveSettings();
+  renderEngine();
+  openSheet(false);
+  if(S.running && S.settings.wake && S.settings.asrKey) startCloudWake();
+  if(cleaned) toast('保存了，并清掉了密钥里的中文/全角字符。');
+  else if(!S.settings.apiKey) toast('保存了。没密钥，我先靠内置经验。');
+  else if(S.settings.asrKey) toast('接上了。现在我能听懂你们在吵什么。');
+  else toast('接上了。转写那栏空着，我只听声音的动静。');
+});
+
+$('btnTest').addEventListener('click', async function(){
+  unlockVoice();
+  var cleaned = cleanInputs();
+  S.settings.asrModel = $('inpAsr').value.trim();
+  S.settings.chatModel = $('inpChat').value.trim();
+  saveSettings();
+  renderEngine();
+  var sim = 'A：你从来就没把我说的话当回事。\nB：我怎么没当回事？我天天忙成这样，你还要我怎么样？\nA：你天天什么？你天天就知道躲。\nB：我躲？我这是不想跟你吵！';
+  openSheet(false);
+  if(cleaned){ setTimeout(function(){ toast('密钥里的中文/全角字符已经清掉了，再点一次试一下。'); }, 320); }
+  if(!S.settings.apiKey){
+    var l = localJudge();
+    setState('speak');
+    chime();
+    speak(l.line, { after:function(){ setState(S.running?'listen':'idle'); } });
+    toast('没填密钥，先用内置话术试一句。');
+    return;
+  }
+  if(/^sk-/.test(S.settings.baseUrl)){
+    toast('你把密钥粘到「接口地址」那行了，换一下位置。');
+    return;
+  }
+  setState('think');
+  toast('正在拿一段模拟争执问模型……');
+  try{
+    var j = await judgeCloud(null, sim);
+    if(!j) throw new Error('模型返回的内容不是约定的 JSON');
+    if(j.quarrel === false) throw new Error('模型判定这段不是吵架');
+    setState('speak');
+    chime();
+    speak(j.line, { after:function(){ setState(S.running?'listen':'idle'); } });
+    toast('模型判成：' + (j.parties||'不明') + (j.topic ? ' · ' + j.topic : ''));
+  }catch(e){
+    setState(S.running?'listen':'idle');
+    toast(explainErr(e));
+  }
+});
+
+$('btnCheck').addEventListener('click', function(){
+  cleanInputs();
+  saveSettings();
+  if(!S.settings.apiKey){ toast('还没填密钥。'); return; }
+  toast('正在连……');
+  checkConnection();
+});
+
+$('btnVoiceCheck').addEventListener('click', function(){
+  unlockVoice();
+  if(!window.speechSynthesis){ toast('这台浏览器不支持语音合成。'); return; }
+  try{ speechSynthesis.getVoices(); }catch(e){}
+  renderVoiceStatus();
+  var probe = new SpeechSynthesisUtterance('我是阿和，声音出来了');
+  probe.lang = 'zh-CN'; probe.rate = 0.95; probe.volume = 0.9;
+  var v = pickVoice();
+  if(v){ probe.voice = v; probe.lang = v.lang || 'zh-CN'; }
+  probe.onstart = function(){ toast('引擎已启动，听到声音了吗？听不到就是静音键或音量的事。'); };
+  probe.onerror = function(){ toast('引擎报错了，可能没装中文语音包。'); };
+  try{ speechSynthesis.cancel(); speechSynthesis.speak(probe); }catch(e){ toast('语音合成被拦住了。'); }
+});
+
+/* ================= 启动 ================= */
+loadStored();
+renderEngine();
+renderLog();
+renderVoiceStatus();
+renderWakeStatus();
+$('btnMute').setAttribute('aria-pressed', String(!!S.settings.mute));
+$('muteWave').style.opacity = S.settings.mute ? '0.25' : '1';
+$('muteWave2').style.opacity = S.settings.mute ? '0.25' : '1';
+$('swVoice').setAttribute('aria-checked', String(!!S.settings.voice));
+$('swWake').setAttribute('aria-checked', String(!!S.settings.wake));
+$('logBox').hidden = false;
+if(!S.settings.apiKey){ $('engineChip').textContent = '内置话术'; }
+setState('idle');
+fitCanvas();
+requestAnimationFrame(drawFace);
+requestAnimationFrame(loop);
+setTimeout(fitCanvas, 320);
+window.addEventListener('load', fitCanvas);
+
+})();
+</script>
+</body>
+</html>
